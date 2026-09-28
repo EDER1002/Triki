@@ -1,0 +1,325 @@
+/* =========================================
+   CONFIGURACIÓN GENERAL
+========================================= */
+
+:root {
+    --board-size: 390px;
+
+    /* Líneas del tablero (estilo #) */
+    --line-size: 8px;
+    --line-color: #212529;
+
+    --x-color: #0d6efd;
+    --o-color: #dc3545;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #f5f7fb 0%, #eef2f7 100%);
+    color: #212529;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+
+/* =========================================
+   CONTENEDOR DEL JUEGO
+========================================= */
+
+.game-wrapper {
+    width: 100%;
+    max-width: 1000px;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================
+   ENCABEZADO
+========================================= */
+
+header h1 {
+    letter-spacing: -1px;
+}
+
+header p {
+    font-size: 1rem;
+}
+
+
+/* =========================================
+   PANEL DE CONTROLES
+========================================= */
+
+.control-panel {
+    padding: 24px;
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    border-radius: 18px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.control-panel .btn {
+    min-width: 90px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.control-panel .btn:hover {
+    transform: translateY(-2px);
+}
+
+.control-panel .btn.active {
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+
+/* =========================================
+   ESTADO DEL JUEGO
+========================================= */
+
+.status-message {
+    min-height: 28px;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   TABLERO (estilo #)
+   Cuadrícula 3x3 sin bordes exteriores:
+   solo se dibujan las 4 líneas internas.
+========================================= */
+
+.board {
+    width: var(--board-size);
+    max-width: 100%;
+    aspect-ratio: 1 / 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0;
+    margin: 0 auto;
+    padding: 0;
+}
+
+
+/* =========================================
+   CASILLAS
+========================================= */
+
+.cell {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #212529;
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Líneas horizontales: debajo de las filas 1 y 2 */
+.cell:nth-child(-n + 6) {
+    border-bottom: var(--line-size) solid var(--line-color);
+}
+
+/* Líneas verticales: a la derecha de las columnas 1 y 2 */
+.cell:nth-child(3n + 1),
+.cell:nth-child(3n + 2) {
+    border-right: var(--line-size) solid var(--line-color);
+}
+
+/* Hover solamente para casillas vacías */
+.cell:hover:not(.occupied) {
+    background: rgba(13, 110, 253, 0.08);
+}
+
+/* Símbolo X */
+.cell.x {
+    color: var(--x-color);
+}
+
+/* Símbolo O */
+.cell.o {
+    color: var(--o-color);
+}
+
+
+/* =========================================
+   ANIMACIÓN AL COLOCAR SÍMBOLO
+   (solo crece el símbolo, las líneas no se mueven)
+========================================= */
+
+.symbol-animation {
+    animation: symbolPop 0.25s ease-out;
+}
+
+@keyframes symbolPop {
+    from {
+        font-size: 0;
+    }
+}
+
+
+/* =========================================
+   CASILLAS GANADORAS
+========================================= */
+
+.winning-cell {
+    animation: winningPulse 0.8s ease-in-out infinite alternate;
+    background: #fff3cd !important;
+}
+
+@keyframes winningPulse {
+    from {
+        background-color: #fff3cd;
+    }
+
+    to {
+        background-color: #ffe69c;
+    }
+}
+
+
+/* =========================================
+   TABLERO TERMINADO
+========================================= */
+
+.board.round-finished .cell {
+    cursor: default;
+}
+
+.board.round-finished .cell:hover:not(.winning-cell) {
+    background: transparent;
+}
+
+
+/* =========================================
+   MARCADOR
+========================================= */
+
+.score-board {
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+}
+
+.score-board .list-group-item {
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+}
+
+.score-board .list-group-item.active {
+    font-weight: 600;
+}
+
+
+/* =========================================
+   ALERTA INFORMATIVA
+========================================= */
+
+.alert {
+    border-radius: 12px;
+}
+
+
+/* =========================================
+   MODAL
+========================================= */
+
+.modal-content {
+    border: none;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+}
+
+.accordion {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.accordion-button {
+    font-weight: 600;
+}
+
+.accordion-button:not(.collapsed) {
+    box-shadow: none;
+}
+
+
+/* =========================================
+   RESPONSIVE — TABLET
+========================================= */
+
+@media (max-width: 991.98px) {
+
+    .game-wrapper {
+        max-width: 700px;
+    }
+
+    .score-board {
+        margin-top: 10px;
+    }
+}
+
+
+/* =========================================
+   RESPONSIVE — CELULAR
+========================================= */
+
+@media (max-width: 575.98px) {
+
+    :root {
+        --line-size: 6px;
+    }
+
+    .game-wrapper {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .control-panel {
+        padding: 18px;
+    }
+
+    .board {
+        width: min(90vw, 360px);
+    }
+
+    .cell {
+        font-size: 3.5rem;
+    }
+
+    .status-message {
+        font-size: 1rem;
+    }
+
+    header h1 {
+        font-size: 2.2rem;
+    }
+}
+
+
+/* =========================================
+   ACCESIBILIDAD
+========================================= */
+
+.cell:focus-visible,
+.btn:focus-visible {
+    outline: 3px solid rgba(13, 110, 253, 0.35);
+    outline-offset: -3px;
+}

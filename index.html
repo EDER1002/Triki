@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Juego de Triqui o Tres en Raya con modo local y contra PC."
+    >
+
+    <title>Triqui — Tres en Raya</title>
+
+
+    <!-- =========================================
+         BOOTSTRAP 5.3.8
+    ========================================== -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- =========================================
+         CSS PROPIO
+    ========================================== -->
+
+    <link
+        rel="stylesheet"
+        href="styles.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- =========================================
+         CONTENEDOR PRINCIPAL
+    ========================================== -->
+
+    <main class="container py-4 py-md-5">
+
+        <section class="game-wrapper mx-auto">
+
+
+            <!-- =========================================
+                 ENCABEZADO
+            ========================================== -->
+
+            <header class="text-center mb-4">
+
+                <h1 class="display-5 fw-bold mb-2">
+                    🎮 Triqui
+                </h1>
+
+                <p class="text-secondary mb-0">
+                    Tres en raya — consigue tres símbolos en línea.
+                </p>
+
+            </header>
+
+
+            <!-- =========================================
+                 CONTROLES
+            ========================================== -->
+
+            <section
+                class="control-panel mb-4"
+                aria-label="Controles del juego"
+            >
+
+                <!-- MODO DE JUEGO -->
+
+                <div class="text-center mb-3">
+
+                    <h2 class="h5 fw-bold mb-3">
+                        Modo de juego
+                    </h2>
+
+                    <div class="d-flex justify-content-center flex-wrap gap-2">
+
+                        <button
+                            type="button"
+                            id="mode-local"
+                            class="btn btn-outline-primary"
+                            aria-pressed="true"
+                        >
+                            1 vs 1
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="mode-pc"
+                            class="btn btn-outline-info"
+                            aria-pressed="false"
+                        >
+                            vs PC
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DIFICULTAD -->
+
+                <div
+                    id="difficulty-container"
+                    class="text-center mb-3 d-none"
+                >
+
+                    <h2 class="h5 fw-bold mb-3">
+                        Dificultad
+                    </h2>
+
+                    <div class="d-flex justify-content-center flex-wrap gap-2">
+
+                        <button
+                            type="button"
+                            id="difficulty-easy"
+                            class="btn btn-outline-success"
+                            aria-pressed="true"
+                        >
+                            Fácil
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="difficulty-normal"
+                            class="btn btn-outline-warning"
+                            aria-pressed="false"
+                        >
+                            Normal
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="difficulty-hard"
+                            class="btn btn-outline-danger"
+                            aria-pressed="false"
+                        >
+                            Difícil
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MANUAL + REINICIAR -->
+
+                <div class="d-flex justify-content-center flex-wrap gap-2">
+
+                    <button
+                        type="button"
+                        id="rules-button"
+                        class="btn btn-outline-secondary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#rulesModal"
+                    >
+                        📖 Manual y reglas
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="restart-button"
+                        class="btn btn-outline-dark"
+                    >
+                        Reiniciar Juego
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================================
+                 JUEGO
+            ========================================== -->
+
+            <section class="game-area">
+
+                <div class="row g-4 align-items-center">
+
+
+                    <!-- =====================================
+                         TABLERO
+                    ====================================== -->
+
+                    <div class="col-12 col-lg-7">
+
+                        <div class="text-center">
+
+                            <div
+                                id="status"
+                                class="status-message text-primary mb-3"
+                                aria-live="polite"
+                            >
+                                Turno del Jugador 1 (X)
+                            </div>
+
+
+                            <!-- TABLERO -->
+
+                            <div
+                                id="board"
+                                class="board mx-auto"
+                                role="grid"
+                                aria-label="Tablero de Triqui"
+                            >
+
+                                <button
+                                    class="cell"
+                                    data-index="0"
+                                    type="button"
+                                    role="gridcell"
+                                    aria-label="Casilla 1"
+                                ></button>
+
+                                <button
+                                    class="cell"
+                                    data-index="1"
+                                    type="button"
+                                    role="gridcell"
+                                    aria-label="Casilla 2"
+                                ></button>
+
+                                <button
+                                    class="cell"
+                                    data-index="2"
+                                    type="button"
+                                    role="gridcell"
+                                    aria-label="Casilla 3"
+                                ></button>
+
+
+                                <button
+                                    class="cell"
+                                    data-index="3"
+                                    type="button"
+                                    role="gridcell"
+                                    aria-label="Casilla 4"
+                                ></button>
+
+                                <button
+                                    class="cell"
+                                    data-index="4"
+                                    type="button"
+                                    role="gridcell"
+                                    aria-label="Casilla 5"
+                                ></button>
+
+                                <button
+                                    class="cell"
+                                    data-index="5"
+                                    type="button"
+                                    role="gridcell"
+                                    aria-label="Casilla 6"
+                                ></button>
+
+
+                                <button
+                                    class="cell"
+                                    data-index="6"
+                                    type="button"
+                                    role="gridcell"
+                                    aria-label="Casilla 7"
+                                ></button>
+
+                                <button
+                                    class="cell"
+                                    data-index="7"
+                                    type="button"
+                                    role="gridcell"
+                                    aria-label="Casilla 8"
+                                ></button>
+
+                                <button
+                                    class="cell"
+                                    data-index="8"
+                                    type="button"
+                                    role="gridcell"
+                                    aria-label="Casilla 9"
+                                ></button>
+
+                            </div>
+
+
+                            <!-- MENSAJE DE RONDA -->
+
+                            <p
+                                id="round-message"
+                                class="small text-secondary mt-3 mb-0"
+                            >
+                                La puntuación se conserva entre rondas.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =====================================
+                         MARCADOR
+                    ====================================== -->
+
+                    <aside
+                        class="col-12 col-lg-5"
+                        aria-label="Marcador de la partida"
+                    >
+
+                        <ul class="list-group score-board">
+
+                            <li
+                                class="list-group-item active"
+                                aria-current="true"
+                            >
+                                Marcador de la Partida
+                            </li>
+
+
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center"
+                            >
+
+                                <span>
+                                    Jugador 1 (X)
+                                </span>
+
+                                <span
+                                    id="score-x"
+                                    class="badge text-bg-primary rounded-pill"
+                                >
+                                    0
+                                </span>
+
+                            </li>
+
+
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center"
+                            >
+
+                                <span>
+                                    Jugador 2 / Computadora (O)
+                                </span>
+
+                                <span
+                                    id="score-o"
+                                    class="badge text-bg-danger rounded-pill"
+                                >
+                                    0
+                                </span>
+
+                            </li>
+
+
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center"
+                            >
+
+                                <span>
+                                    Empates
+                                </span>
+
+                                <span
+                                    id="score-ties"
+                                    class="badge text-bg-secondary rounded-pill"
+                                >
+                                    0
+                                </span>
+
+                            </li>
+
+                        </ul>
+
+
+                        <!-- INFORMACIÓN -->
+
+                        <div
+                            class="alert alert-light border mt-3 mb-0 small"
+                        >
+
+                            <strong>Importante:</strong>
+
+                            al terminar una ronda, el marcador permanece.
+
+                            La siguiente ronda comienza automáticamente
+                            después de 3 segundos.
+
+                        </div>
+
+                    </aside>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================================
+         MODAL — MANUAL Y REGLAS
+    ========================================== -->
+
+    <div
+        class="modal fade"
+        id="rulesModal"
+        tabindex="-1"
+        aria-labelledby="rulesModalLabel"
+        aria-hidden="true"
+    >
+
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+
+            <div class="modal-content">
+
+
+                <!-- CABECERA -->
+
+                <div class="modal-header">
+
+                    <h2
+                        class="modal-title fs-5"
+                        id="rulesModalLabel"
+                    >
+                        📖 Manual y reglas de Triqui
+                    </h2>
+
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar"
+                    ></button>
+
+                </div>
+
+
+                <!-- CONTENIDO -->
+
+                <div class="modal-body">
+
+                    <div
+                        class="accordion"
+                        id="rulesAccordion"
+                    >
+
+
+                        <!-- OBJETIVO -->
+
+                        <div class="accordion-item">
+
+                            <h3 class="accordion-header">
+
+                                <button
+                                    class="accordion-button"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#rulesObjective"
+                                    aria-expanded="true"
+                                    aria-controls="rulesObjective"
+                                >
+                                    1. Objetivo del juego
+                                </button>
+
+                            </h3>
+
+
+                            <div
+                                id="rulesObjective"
+                                class="accordion-collapse collapse show"
+                                data-bs-parent="#rulesAccordion"
+                            >
+
+                                <div class="accordion-body">
+
+                                    El objetivo es conseguir
+                                    <strong>
+                                        tres símbolos iguales en línea
+                                    </strong>.
+
+                                    La línea puede ser horizontal,
+                                    vertical o diagonal.
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- MODOS -->
+
+                        <div class="accordion-item">
+
+                            <h3 class="accordion-header">
+
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#rulesModes"
+                                    aria-expanded="false"
+                                    aria-controls="rulesModes"
+                                >
+                                    2. Modos de juego
+                                </button>
+
+                            </h3>
+
+
+                            <div
+                                id="rulesModes"
+                                class="accordion-collapse collapse"
+                                data-bs-parent="#rulesAccordion"
+                            >
+
+                                <div class="accordion-body">
+
+                                    <ul class="mb-0">
+
+                                        <li>
+                                            <strong>1 vs 1:</strong>
+                                            dos jugadores comparten
+                                            la misma pantalla.
+                                            X empieza y después juega O.
+                                        </li>
+
+                                        <li>
+                                            <strong>vs PC:</strong>
+                                            el jugador utiliza X
+                                            y empieza primero.
+                                            La computadora utiliza O.
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- DIFICULTADES -->
+
+                        <div class="accordion-item">
+
+                            <h3 class="accordion-header">
+
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#rulesDifficulty"
+                                    aria-expanded="false"
+                                    aria-controls="rulesDifficulty"
+                                >
+                                    3. Niveles de dificultad
+                                </button>
+
+                            </h3>
+
+
+                            <div
+                                id="rulesDifficulty"
+                                class="accordion-collapse collapse"
+                                data-bs-parent="#rulesAccordion"
+                            >
+
+                                <div class="accordion-body">
+
+                                    <ul class="mb-0">
+
+                                        <li>
+                                            <strong>Fácil:</strong>
+                                            la computadora elige
+                                            una casilla vacía al azar.
+                                        </li>
+
+                                        <li>
+                                            <strong>Normal:</strong>
+                                            primero intenta bloquear
+                                            una victoria inmediata
+                                            del jugador.
+                                            Si no existe peligro,
+                                            juega al azar.
+                                        </li>
+
+                                        <li>
+                                            <strong>Difícil:</strong>
+                                            utiliza el algoritmo
+                                            <strong>Minimax</strong>
+                                            para no perder.
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- MARCADOR -->
+
+                        <div class="accordion-item">
+
+                            <h3 class="accordion-header">
+
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#rulesRounds"
+                                    aria-expanded="false"
+                                    aria-controls="rulesRounds"
+                                >
+                                    4. Victorias, empates y marcador
+                                </button>
+
+                            </h3>
+
+
+                            <div
+                                id="rulesRounds"
+                                class="accordion-collapse collapse"
+                                data-bs-parent="#rulesAccordion"
+                            >
+
+                                <div class="accordion-body">
+
+                                    <p>
+                                        Cuando alguien gana,
+                                        su punto se suma al marcador.
+                                    </p>
+
+                                    <p>
+                                        Si las nueve casillas quedan
+                                        ocupadas sin ganador,
+                                        se suma un empate.
+                                    </p>
+
+                                    <p class="mb-0">
+
+                                        Después de terminar una ronda,
+                                        el tablero queda bloqueado
+                                        durante <strong>3 segundos</strong>.
+
+                                        Luego se limpia solamente
+                                        el tablero y comienza una nueva
+                                        ronda.
+
+                                        <strong>
+                                            El marcador no se reinicia.
+                                        </strong>
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- REINICIAR -->
+
+                        <div class="accordion-item">
+
+                            <h3 class="accordion-header">
+
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#rulesReset"
+                                    aria-expanded="false"
+                                    aria-controls="rulesReset"
+                                >
+                                    5. ¿Para qué sirve "Reiniciar Juego"?
+                                </button>
+
+                            </h3>
+
+
+                            <div
+                                id="rulesReset"
+                                class="accordion-collapse collapse"
+                                data-bs-parent="#rulesAccordion"
+                            >
+
+                                <div class="accordion-body">
+
+                                    El botón
+                                    <strong>
+                                        "Reiniciar Juego"
+                                    </strong>
+
+                                    sirve para empezar
+                                    completamente desde cero.
+
+                                    Al presionarlo se limpia
+                                    el tablero y también se ponen
+                                    en <strong>0</strong>
+
+                                    las victorias de X,
+                                    las victorias de O
+                                    y los empates.
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- REGLAS -->
+
+                        <div class="accordion-item">
+
+                            <h3 class="accordion-header">
+
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#rulesTips"
+                                    aria-expanded="false"
+                                    aria-controls="rulesTips"
+                                >
+                                    6. Reglas básicas
+                                </button>
+
+                            </h3>
+
+
+                            <div
+                                id="rulesTips"
+                                class="accordion-collapse collapse"
+                                data-bs-parent="#rulesAccordion"
+                            >
+
+                                <div class="accordion-body">
+
+                                    <ul class="mb-0">
+
+                                        <li>
+                                            No se puede ocupar
+                                            una casilla que ya
+                                            tenga un símbolo.
+                                        </li>
+
+                                        <li>
+                                            No se puede seguir jugando
+                                            después de que termine
+                                            la ronda.
+                                        </li>
+
+                                        <li>
+                                            X siempre comienza
+                                            la ronda.
+                                        </li>
+
+                                        <li>
+                                            El marcador permanece
+                                            entre rondas hasta utilizar
+                                            "Reiniciar Juego".
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- PIE DEL MODAL -->
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Cerrar manual
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         BOOTSTRAP JAVASCRIPT
+    ========================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    ></script>
+
+
+    <!-- =========================================
+         JAVASCRIPT PROPIO
+
+         IMPORTANTE:
+         Se carga AL FINAL del body para que
+         todos los elementos HTML ya existan.
+    ========================================== -->
+
+    <script src="game.js"></script>
+
+</body>
+
+</html>
